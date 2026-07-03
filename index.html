@@ -1,0 +1,2268 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Consultoria e Avaliação Fisioterapêutica Inicial do Sono</title>
+  <style>
+    :root {
+      --bg: #f4f6fb;
+      --surface: #ffffff;
+      --surface-alt: #eef1fb;
+      --text: #182044;
+      --muted: #667097;
+      --line: #dce2f2;
+      --brand: #27328f;
+      --brand-strong: #1d2674;
+      --accent: #6f7cf6;
+      --danger: #b84d4d;
+      --shadow: 0 18px 55px rgba(24, 32, 68, .12);
+      --radius: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--text);
+      background:
+        linear-gradient(115deg, rgba(39, 50, 143, .12), transparent 42%),
+        linear-gradient(245deg, rgba(111, 124, 246, .12), transparent 38%),
+        var(--bg);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.45;
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+    }
+
+    .shell {
+      display: grid;
+      grid-template-columns: minmax(260px, 360px) minmax(0, 1fr);
+      min-height: 100vh;
+    }
+
+    .side {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 42px 34px;
+      color: #ffffff;
+      background:
+        linear-gradient(rgba(39, 50, 143, .94), rgba(29, 38, 116, .96)),
+        #27328f;
+    }
+
+    .brand-mark {
+      width: min(100%, 260px);
+      min-height: 108px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(255,255,255,.28);
+      border-radius: var(--radius);
+      margin-bottom: 26px;
+      background: rgba(255,255,255,.96);
+      padding: 14px;
+    }
+
+    .brand-mark img {
+      display: block;
+      width: 100%;
+      height: auto;
+      max-height: 86px;
+      object-fit: contain;
+    }
+
+    .side h1 {
+      margin: 0 0 14px;
+      font-size: clamp(2rem, 4vw, 3rem);
+      line-height: 1.05;
+      letter-spacing: 0;
+    }
+
+    .side p {
+      margin: 0;
+      color: rgba(255,255,255,.82);
+      font-size: 1rem;
+    }
+
+    .brand-subtitle {
+      display: inline-flex;
+      align-items: center;
+      margin: 0 0 18px;
+      padding: 7px 10px;
+      border: 1px solid rgba(255,255,255,.24);
+      border-radius: var(--radius);
+      color: rgba(255,255,255,.9);
+      font-weight: 800;
+      font-size: .82rem;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+    }
+
+    .side-footer {
+      display: grid;
+      gap: 12px;
+      margin-top: 42px;
+      color: rgba(255,255,255,.78);
+      font-size: .92rem;
+    }
+
+    .main {
+      display: grid;
+      align-items: center;
+      padding: 36px;
+    }
+
+    .form-frame {
+      width: min(100%, 880px);
+      margin: 0 auto;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .brand-strip {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 18px 26px;
+      border-bottom: 1px solid var(--line);
+      background: #ffffff;
+    }
+
+    .brand-strip img {
+      width: 174px;
+      max-width: 48%;
+      height: auto;
+      display: block;
+    }
+
+    .brand-strip span {
+      color: var(--muted);
+      font-size: .92rem;
+      font-weight: 750;
+      text-align: right;
+    }
+
+    .topbar {
+      padding: 22px 26px 0;
+    }
+
+    .mode-switch {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      padding: 18px 26px 0;
+    }
+
+    .mode-btn {
+      min-height: 42px;
+      border: 1px solid #c9d6d3;
+      border-radius: var(--radius);
+      background: #ffffff;
+      color: var(--brand-strong);
+      cursor: pointer;
+      font-weight: 800;
+    }
+
+    .mode-btn.active {
+      color: #ffffff;
+      background: var(--brand);
+      border-color: var(--brand);
+    }
+
+    .mode-panel {
+      display: none;
+    }
+
+    .mode-panel.active {
+      display: block;
+    }
+
+    .progress-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      color: var(--muted);
+      font-size: .93rem;
+      margin-bottom: 12px;
+    }
+
+    .progress {
+      height: 8px;
+      background: #e7edeb;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress span {
+      display: block;
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, var(--brand), var(--accent));
+      transition: width .25s ease;
+    }
+
+    form {
+      padding: 28px 26px 26px;
+    }
+
+    .step {
+      display: none;
+      min-height: 440px;
+    }
+
+    .step.active {
+      display: block;
+      animation: fade .18s ease-out;
+    }
+
+    @keyframes fade {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .step-kicker {
+      color: var(--brand);
+      font-weight: 800;
+      text-transform: uppercase;
+      font-size: .78rem;
+      letter-spacing: .08em;
+      margin: 0 0 10px;
+    }
+
+    h2 {
+      margin: 0 0 10px;
+      font-size: clamp(1.55rem, 3vw, 2.35rem);
+      line-height: 1.12;
+      letter-spacing: 0;
+    }
+
+    .intro {
+      margin: 0 0 28px;
+      color: var(--muted);
+      max-width: 64ch;
+    }
+
+    .grid {
+      display: grid;
+      gap: 18px;
+    }
+
+    .two {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .field {
+      display: grid;
+      gap: 8px;
+    }
+
+    label,
+    legend {
+      font-weight: 750;
+      color: #20302d;
+    }
+
+    .hint {
+      color: var(--muted);
+      font-size: .9rem;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      border: 1px solid #cbd7d4;
+      background: #fbfcfc;
+      color: var(--text);
+      border-radius: var(--radius);
+      padding: 13px 14px;
+      outline: none;
+      transition: border-color .16s ease, box-shadow .16s ease, background .16s ease;
+    }
+
+    textarea {
+      min-height: 128px;
+      resize: vertical;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: var(--brand);
+      background: #ffffff;
+      box-shadow: 0 0 0 4px rgba(29, 111, 100, .12);
+    }
+
+    fieldset {
+      border: 0;
+      margin: 0;
+      padding: 0;
+    }
+
+    .choice-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .choice {
+      display: flex;
+      align-items: flex-start;
+      gap: 11px;
+      padding: 12px 13px;
+      border: 1px solid #d6dfdc;
+      border-radius: var(--radius);
+      background: #fbfcfc;
+      cursor: pointer;
+      min-height: 48px;
+    }
+
+    .choice:hover {
+      border-color: #aac5bf;
+      background: #f7faf9;
+    }
+
+    .choice input {
+      width: 18px;
+      height: 18px;
+      margin-top: 2px;
+      accent-color: var(--brand);
+      flex: 0 0 auto;
+    }
+
+    .conditional {
+      display: none;
+      margin-top: 18px;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface-alt);
+    }
+
+    .conditional.visible {
+      display: grid;
+      gap: 18px;
+    }
+
+    .metric {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #f8fbfa;
+    }
+
+    .metric strong {
+      font-size: 1.35rem;
+      color: var(--brand-strong);
+    }
+
+    .actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding-top: 24px;
+      margin-top: 26px;
+      border-top: 1px solid var(--line);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 44px;
+      border: 1px solid transparent;
+      border-radius: var(--radius);
+      padding: 0 16px;
+      cursor: pointer;
+      font-weight: 800;
+      color: #ffffff;
+      background: var(--brand);
+      transition: transform .14s ease, background .14s ease, border-color .14s ease;
+    }
+
+    .btn:hover {
+      background: var(--brand-strong);
+      transform: translateY(-1px);
+    }
+
+    .btn.secondary {
+      background: #ffffff;
+      color: var(--brand-strong);
+      border-color: #c9d6d3;
+    }
+
+    .btn.secondary:hover {
+      background: #f2f7f6;
+    }
+
+    .btn[disabled] {
+      opacity: .45;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .review {
+      display: none;
+      padding: 28px 26px 32px;
+    }
+
+    .review.active {
+      display: block;
+    }
+
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(280px, .9fr);
+      gap: 18px;
+      margin-top: 22px;
+    }
+
+    .panel {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #ffffff;
+      padding: 18px;
+    }
+
+    .panel h3 {
+      margin: 0 0 12px;
+      font-size: 1.05rem;
+      letter-spacing: 0;
+    }
+
+    .summary-list {
+      display: grid;
+      gap: 10px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .summary-list li {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #edf1f0;
+      color: var(--muted);
+    }
+
+    .summary-list li:last-child {
+      border-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .summary-list strong {
+      color: var(--text);
+      text-align: right;
+    }
+
+    .alert-list {
+      display: grid;
+      gap: 12px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .alert {
+      padding: 14px;
+      border-radius: var(--radius);
+      border: 1px solid #e3c18d;
+      background: #fff8eb;
+    }
+
+    .alert strong {
+      display: block;
+      margin-bottom: 5px;
+      color: #7b4b13;
+    }
+
+    .alert.critical {
+      border-color: #e2b5b5;
+      background: #fff3f3;
+    }
+
+    .alert.critical strong {
+      color: var(--danger);
+    }
+
+    .provider-form {
+      padding: 28px 26px 26px;
+    }
+
+    .provider-section {
+      display: grid;
+      gap: 18px;
+      padding: 24px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .provider-section:first-child {
+      padding-top: 0;
+    }
+
+    .provider-section:last-child {
+      border-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .provider-section h2 {
+      font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+    }
+
+    .inline-alert {
+      display: none;
+      padding: 12px 14px;
+      border-radius: var(--radius);
+      border: 1px solid #e2b5b5;
+      background: #fff3f3;
+      color: var(--danger);
+      font-weight: 800;
+    }
+
+    .inline-alert.visible {
+      display: block;
+    }
+
+    .suggestion-box {
+      display: grid;
+      gap: 12px;
+      padding: 16px;
+      border: 1px solid #d7c28f;
+      border-radius: var(--radius);
+      background: #fff9ec;
+    }
+
+    .suggestion-box strong {
+      color: #6d4815;
+    }
+
+    .question-block {
+      display: grid;
+      gap: 10px;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fbfcfc;
+    }
+
+    .question-block > span {
+      font-weight: 750;
+    }
+
+    .score-card {
+      display: grid;
+      gap: 6px;
+      padding: 16px;
+      border: 1px solid #c9d6d3;
+      border-radius: var(--radius);
+      background: #f7faf9;
+    }
+
+    .score-card strong {
+      font-size: 1.15rem;
+      color: var(--brand-strong);
+    }
+
+    .score-card.critical {
+      border-color: #e2b5b5;
+      background: #fff3f3;
+    }
+
+    .score-card.critical strong,
+    .score-card.critical span {
+      color: var(--danger);
+    }
+
+    .term-box {
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #f8fbfa;
+    }
+
+    .pdf-sheet {
+      display: grid;
+      gap: 16px;
+      color: #172044;
+      background: #ffffff;
+    }
+
+    .pdf-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding-bottom: 14px;
+      border-bottom: 3px solid var(--brand);
+    }
+
+    .pdf-header img {
+      width: 180px;
+      height: auto;
+    }
+
+    .pdf-block {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 14px;
+      break-inside: avoid;
+    }
+
+    .pdf-block h3 {
+      margin: 0 0 10px;
+      color: var(--brand-strong);
+      font-size: 1rem;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    .pdf-rows {
+      display: grid;
+      gap: 7px;
+    }
+
+    .pdf-row {
+      display: grid;
+      grid-template-columns: 190px minmax(0, 1fr);
+      gap: 12px;
+      font-size: .94rem;
+    }
+
+    .pdf-row span:first-child {
+      color: var(--muted);
+      font-weight: 800;
+    }
+
+    .pdf-highlight {
+      border-color: var(--brand);
+      background: #f3f5ff;
+    }
+
+    @media print {
+      body {
+        background: #ffffff;
+      }
+
+      body * {
+        visibility: hidden;
+      }
+
+      #pdfReport,
+      #pdfReport * {
+        visibility: visible;
+      }
+
+      #pdfReport {
+        display: block !important;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        padding: 0;
+      }
+
+      .pdf-sheet {
+        box-shadow: none;
+        border: 0;
+      }
+    }
+
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .tag {
+      border: 1px solid #cad8d5;
+      background: #f7faf9;
+      border-radius: 999px;
+      padding: 6px 10px;
+      color: #32423f;
+      font-size: .88rem;
+      font-weight: 700;
+    }
+
+    .empty {
+      color: var(--muted);
+      margin: 0;
+    }
+
+    @media (max-width: 840px) {
+      .shell {
+        grid-template-columns: 1fr;
+      }
+
+      .side {
+        min-height: auto;
+        padding: 28px 22px;
+      }
+
+      .side-footer {
+        margin-top: 22px;
+      }
+
+      .main {
+        padding: 18px;
+        align-items: start;
+      }
+
+      .brand-strip {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .brand-strip img {
+        max-width: 220px;
+      }
+
+      .brand-strip span {
+        text-align: left;
+      }
+
+      .two,
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .step {
+        min-height: auto;
+      }
+
+      .actions {
+        flex-direction: column-reverse;
+        align-items: stretch;
+      }
+
+      .btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside class="side" aria-label="Apresentação">
+      <div>
+        <div class="brand-mark">
+          <img src="assets/logo-macrosom-branco.jpg" alt="Macrosom Centro Auditivo e CPAP">
+        </div>
+        <span class="brand-subtitle">Centro Auditivo e CPAP</span>
+        <h1>Consultoria do Sono</h1>
+        <p>Formulário inteligente para triagem fisioterapêutica, acolhimento do paciente e organização do raciocínio clínico.</p>
+      </div>
+      <div class="side-footer">
+        <span>Experiência em etapas curtas</span>
+        <span>IMC calculado automaticamente</span>
+        <span>Dashboard clínico após envio</span>
+        <span>Módulo restrito do fisioterapeuta</span>
+      </div>
+    </aside>
+
+    <main class="main">
+      <section class="form-frame" aria-live="polite">
+        <div class="brand-strip">
+          <img src="assets/logo-macrosom.png" alt="Macrosom Centro Auditivo e CPAP">
+          <span>Avaliação fisioterapêutica do sono e adaptação PAP</span>
+        </div>
+        <div class="mode-switch" role="tablist" aria-label="Área do sistema">
+          <button class="mode-btn active" id="patientModeBtn" type="button" role="tab" aria-selected="true">Paciente</button>
+          <button class="mode-btn" id="providerModeBtn" type="button" role="tab" aria-selected="false">Fisioterapeuta</button>
+        </div>
+
+        <div class="topbar" id="formTop">
+          <div class="progress-meta">
+            <span id="stepLabel">Etapa 1 de 4</span>
+            <span id="sectionName">Identificação</span>
+          </div>
+          <div class="progress" aria-hidden="true"><span id="progressBar"></span></div>
+        </div>
+
+        <div class="mode-panel active" id="patientPanel">
+        <form id="sleepForm">
+          <section class="step active" data-step-title="Identificação">
+            <p class="step-kicker">Módulo 1</p>
+            <h2>Para começarmos, conte quem é você.</h2>
+            <p class="intro">Esses dados ajudam a organizar seu atendimento e contextualizar sua queixa principal.</p>
+            <div class="grid">
+              <div class="field">
+                <label for="fullName">Nome completo</label>
+                <input id="fullName" name="fullName" type="text" autocomplete="name" required>
+              </div>
+              <div class="grid two">
+                <div class="field">
+                  <label for="gender">Gênero</label>
+                  <select id="gender" name="gender" required>
+                    <option value="">Selecione</option>
+                    <option>Masculino</option>
+                    <option>Feminino</option>
+                    <option>Outro</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="birthDate">Data de nascimento</label>
+                  <input id="birthDate" name="birthDate" type="date" required>
+                </div>
+              </div>
+              <div class="field">
+                <label for="phone">Telefone/WhatsApp</label>
+                <input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel">
+              </div>
+              <div class="field">
+                <label for="mainComplaint">Queixa principal</label>
+                <span class="hint">Conte resumidamente o que mais te incomoda no seu sono atualmente ou o que te trouxe até esta consultoria.</span>
+                <textarea id="mainComplaint" name="mainComplaint" required></textarea>
+              </div>
+            </div>
+          </section>
+
+          <section class="step" data-step-title="Rotina e sintomas">
+            <p class="step-kicker">Módulo 2</p>
+            <h2>Agora, vamos entender sua rotina do sono.</h2>
+            <p class="intro">Responda com base no que acontece na maioria das noites.</p>
+            <div class="grid">
+              <div class="grid two">
+                <div class="field">
+                  <label for="sleepTime">Horário habitual de dormir</label>
+                  <input id="sleepTime" name="sleepTime" type="time" required>
+                </div>
+                <div class="field">
+                  <label for="wakeTime">Horário habitual de acordar</label>
+                  <input id="wakeTime" name="wakeTime" type="time" required>
+                </div>
+              </div>
+              <div class="grid two">
+                <div class="field">
+                  <label for="scheduleVariation">Seus horários variam muito entre dias úteis e finais de semana?</label>
+                  <select id="scheduleVariation" name="scheduleVariation" required>
+                    <option value="">Selecione</option>
+                    <option>Não</option>
+                    <option>Sim, um pouco</option>
+                    <option>Sim, variam muito</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="screenUse">Uso de telas antes de dormir?</label>
+                  <select id="screenUse" name="screenUse" required>
+                    <option value="">Selecione</option>
+                    <option>Não</option>
+                    <option>Sim, até 30 min antes</option>
+                    <option>Sim, fico mexendo na cama até dormir</option>
+                  </select>
+                </div>
+              </div>
+              <div class="field">
+                <label for="naps">Sente necessidade de sonecas diurnas?</label>
+                <select id="naps" name="naps" required>
+                  <option value="">Selecione</option>
+                  <option>Não</option>
+                  <option>Sim, rápidas (&lt;30min)</option>
+                  <option>Sim, longas (&gt;30min)</option>
+                </select>
+              </div>
+              <fieldset>
+                <legend>Sintomas noturnos</legend>
+                <span class="hint">Marque todos os sintomas que se aplicam.</span>
+                <div class="choice-list">
+                  <label class="choice"><input type="checkbox" name="nightSymptoms" value="Ronco frequente ou relato de terceiros"> Ronco frequente ou relato de terceiros</label>
+                  <label class="choice"><input type="checkbox" name="nightSymptoms" value="Pausas na respiração presenciadas por alguém"> Pausas na respiração presenciadas por alguém</label>
+                  <label class="choice"><input type="checkbox" name="nightSymptoms" value="Acordar com engasgo ou sensação de sufocamento"> Acordar com engasgo ou sensação de sufocamento</label>
+                  <label class="choice"><input type="checkbox" name="nightSymptoms" value="Acordar várias vezes para urinar (Nictúria)"> Acordar várias vezes para urinar (Nictúria)</label>
+                  <label class="choice"><input type="checkbox" name="nightSymptoms" value="Acordar com a boca muito seca"> Acordar com a boca muito seca</label>
+                  <label class="choice"><input type="checkbox" name="nightSymptoms" value="Acordar com dor de cabeça"> Acordar com dor de cabeça</label>
+                  <label class="choice"><input type="checkbox" name="nightSymptoms" value="Sudorese noturna excessiva"> Sudorese noturna excessiva</label>
+                  <label class="choice"><input type="checkbox" name="nightSymptoms" value="Refluxo ou queimação à noite"> Refluxo ou queimação à noite</label>
+                  <label class="choice"><input type="checkbox" name="nightSymptoms" value="Bruxismo ou apertamento dentário"> Bruxismo ou apertamento dentário</label>
+                </div>
+              </fieldset>
+            </div>
+          </section>
+
+          <section class="step" data-step-title="Saúde e exames">
+            <p class="step-kicker">Módulo 3</p>
+            <h2>Alguns dados de saúde completam a triagem.</h2>
+            <p class="intro">O IMC será calculado automaticamente a partir do peso e da altura informados.</p>
+            <div class="grid">
+              <div class="grid two">
+                <div class="field">
+                  <label for="weight">Peso atual em kg</label>
+                  <input id="weight" name="weight" type="number" min="20" max="350" step="0.1" placeholder="Ex: 80" required>
+                </div>
+                <div class="field">
+                  <label for="height">Altura em metros</label>
+                  <input id="height" name="height" type="number" min="1" max="2.5" step="0.01" placeholder="Ex: 1.75" required>
+                </div>
+              </div>
+              <div class="field">
+                <label for="neck">Circunferência cervical em cm</label>
+                <input id="neck" name="neck" type="number" min="20" max="80" step="0.1" placeholder="Ex: 42">
+              </div>
+              <div class="metric" aria-live="polite">
+                <span>IMC calculado</span>
+                <strong id="bmiResult">Informe peso e altura</strong>
+              </div>
+              <fieldset>
+                <legend>Já realizou algum exame do sono (Polissonografia)?</legend>
+                <div class="choice-list">
+                  <label class="choice"><input type="radio" name="sleepExam" value="Sim" required> Sim</label>
+                  <label class="choice"><input type="radio" name="sleepExam" value="Não"> Não</label>
+                </div>
+              </fieldset>
+              <div class="conditional" id="examFields">
+                <div class="grid two">
+                  <div class="field">
+                    <label for="examType">Tipo de exame realizado</label>
+                    <select id="examType" name="examType">
+                      <option value="">Selecione</option>
+                      <option>Polissonografia Tipo I (Laboratório / Completa)</option>
+                      <option>Polissonografia Tipo II (Domiciliar Completa)</option>
+                      <option>Polissonografia Tipo III (Poligrafia Respiratória Domiciliar)</option>
+                      <option>Polissonografia Tipo IV / Biologix (Exame de Canais Simplificados)</option>
+                      <option>Outro / Não sabe informar</option>
+                    </select>
+                  </div>
+                  <div class="field">
+                    <label for="examDate">Data aproximada do exame</label>
+                    <input id="examDate" name="examDate" type="month">
+                  </div>
+                </div>
+                <fieldset>
+                  <legend>O exame foi realizado com titulação de CPAP/PAP?</legend>
+                  <div class="choice-list">
+                    <label class="choice"><input type="radio" name="examTitration" value="Sim"> Sim</label>
+                    <label class="choice"><input type="radio" name="examTitration" value="Não"> Não</label>
+                  </div>
+                </fieldset>
+                <div class="conditional" id="titrationFields">
+                  <div class="field">
+                    <label for="titrationPressure">Pressão ideal de titulação encontrada no exame (cmH2O)</label>
+                    <input id="titrationPressure" name="titrationPressure" type="number" min="0" max="30" step="0.1">
+                  </div>
+                </div>
+                <div class="grid two">
+                  <div class="field">
+                    <label for="ahi">IAH total</label>
+                    <input id="ahi" name="ahi" type="number" min="0" step="0.1" placeholder="Índice de Apneia e Hipopneia/h">
+                  </div>
+                  <div class="field">
+                    <label for="odi">IDO</label>
+                    <input id="odi" name="odi" type="number" min="0" step="0.1" placeholder="Índice de Dessaturação de Oxigênio">
+                  </div>
+                  <div class="field">
+                    <label for="basalO2">Saturação basal de O2 (%)</label>
+                    <input id="basalO2" name="basalO2" type="number" min="0" max="100" step="0.1">
+                  </div>
+                  <div class="field">
+                    <label for="nadirO2">Saturação mínima de O2 / Nadir (%)</label>
+                    <input id="nadirO2" name="nadirO2" type="number" min="0" max="100" step="0.1">
+                  </div>
+                  <div class="field">
+                    <label for="t90">Tempo abaixo de 90% de SaO2 (T90 em minutos)</label>
+                    <input id="t90" name="t90" type="number" min="0" step="0.1">
+                  </div>
+                  <div class="field">
+                    <label for="sleepEfficiency">Eficiência do sono (%), se aplicável</label>
+                    <input id="sleepEfficiency" name="sleepEfficiency" type="number" min="0" max="100" step="0.1">
+                  </div>
+                </div>
+                <div class="field">
+                  <label for="medicalDiagnosis">Diagnóstico médico informado no laudo</label>
+                  <select id="medicalDiagnosis" name="medicalDiagnosis">
+                    <option value="">Selecione</option>
+                    <option>Apneia Obstrutiva do Sono (AOS)</option>
+                    <option>Apneia Central do Sono</option>
+                    <option>Apneia Mista</option>
+                    <option>Ronco Primário</option>
+                    <option>Sem alterações / Normal</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="examFile">Anexo do laudo / exame</label>
+                  <span class="hint">📎 Deseja anexar o PDF ou foto do laudo da Polissonografia? (Formatos aceitos: PDF, JPG, PNG. Máx: 10MB)</span>
+                  <input id="examFile" name="examFile" type="file" accept=".pdf,image/jpeg,image/png">
+                </div>
+                <div class="field">
+                  <label for="examNotes">Comentários e observações do exame</label>
+                  <span class="hint">📝 Caso haja alguma particularidade no laudo, comportamento durante o exame ou observação técnica sobre a polissonografia, registre aqui.</span>
+                  <textarea id="examNotes" name="examNotes"></textarea>
+                </div>
+              </div>
+              <fieldset>
+                <legend>Condições clínicas associadas</legend>
+                <div class="choice-list">
+                  <label class="choice"><input type="checkbox" name="conditions" value="Hipertensão Arterial"> Hipertensão Arterial</label>
+                  <label class="choice"><input type="checkbox" name="conditions" value="Diabetes"> Diabetes</label>
+                  <label class="choice"><input type="checkbox" name="conditions" value="Doença Cardiovascular / Arritmia"> Doença Cardiovascular / Arritmia</label>
+                  <label class="choice"><input type="checkbox" name="conditions" value="Insônia / Ansiedade / Depressão"> Insônia / Ansiedade / Depressão</label>
+                  <label class="choice"><input type="checkbox" name="conditions" value="Asma / Bronquite / Rinite Crônica"> Asma / Bronquite / Rinite Crônica</label>
+                  <label class="choice"><input type="checkbox" name="conditions" value="Rinite/Desvio de Septo"> Rinite/Desvio de Septo</label>
+                </div>
+              </fieldset>
+            </div>
+          </section>
+
+          <section class="step" data-step-title="Histórico com CPAP">
+            <p class="step-kicker">Módulo 4</p>
+            <h2>Você já utiliza ou tentou utilizar CPAP/PAP?</h2>
+            <p class="intro">Se a resposta for não, o formulário seguirá direto para o envio.</p>
+            <div class="grid">
+              <fieldset>
+                <legend>Uso de aparelho CPAP/PAP</legend>
+                <div class="choice-list">
+                  <label class="choice"><input type="radio" name="usesCpap" value="Sim" required> Sim</label>
+                  <label class="choice"><input type="radio" name="usesCpap" value="Não"> Não</label>
+                </div>
+              </fieldset>
+              <div class="conditional" id="cpapFields">
+                <div class="field">
+                  <label for="cpapTime">Há quanto tempo utiliza?</label>
+                  <input id="cpapTime" name="cpapTime" type="text" placeholder="Ex: 8 meses">
+                </div>
+                <div class="grid two">
+                  <div class="field">
+                    <label for="deviceType">Tipo do aparelho atual</label>
+                    <select id="deviceType" name="deviceType">
+                      <option value="">Selecione</option>
+                      <option>CPAP de pressão fixa</option>
+                      <option>APAP automático</option>
+                      <option>BiPAP/VPAP</option>
+                    </select>
+                  </div>
+                  <div class="field">
+                    <label for="maskType">Tipo de máscara atual</label>
+                    <select id="maskType" name="maskType">
+                      <option value="">Selecione</option>
+                      <option>Almofadas Nasais (Pillows)</option>
+                      <option>Nasal Tradicional</option>
+                      <option>Oronasal (Facial - Cobre nariz e boca)</option>
+                    </select>
+                  </div>
+                </div>
+                <fieldset>
+                  <legend>Principais dificuldades atuais com o aparelho</legend>
+                  <div class="choice-list">
+                    <label class="choice"><input type="checkbox" name="cpapDifficulties" value="Vazamento de ar nos olhos/face"> Vazamento de ar nos olhos/face</label>
+                    <label class="choice"><input type="checkbox" name="cpapDifficulties" value="Feridas ou dor na ponte nasal"> Feridas ou dor na ponte nasal</label>
+                    <label class="choice"><input type="checkbox" name="cpapDifficulties" value="Sensação de sufocamento ou falta de ar"> Sensação de sufocamento ou falta de ar</label>
+                    <label class="choice"><input type="checkbox" name="cpapDifficulties" value="Boca seca persistente"> Boca seca persistente</label>
+                    <label class="choice"><input type="checkbox" name="cpapDifficulties" value="Claustrofobia / Angústia com a máscara"> Claustrofobia / Angústia com a máscara</label>
+                    <label class="choice"><input type="checkbox" name="cpapDifficulties" value="Acordo e tiro o aparelho sem perceber"> Acordo e tiro o aparelho sem perceber</label>
+                    <label class="choice"><input type="checkbox" name="cpapDifficulties" value="Ruído incômodo"> Ruído incômodo</label>
+                  </div>
+                </fieldset>
+              </div>
+            </div>
+          </section>
+
+          <div class="actions">
+            <button class="btn secondary" id="prevBtn" type="button">Voltar</button>
+            <button class="btn" id="nextBtn" type="button">Continuar</button>
+          </div>
+        </form>
+
+        <section class="review" id="review">
+          <p class="step-kicker">Dashboard do fisioterapeuta</p>
+          <h2>Resumo clínico gerado</h2>
+          <p class="intro">Esta visão é exibida apenas após o envio do formulário, reunindo os dados e as regras de alerta para apoio à tomada de decisão.</p>
+          <div class="dashboard-grid">
+            <article class="panel">
+              <h3>Dados principais</h3>
+              <ul class="summary-list" id="patientSummary"></ul>
+            </article>
+            <article class="panel">
+              <h3>Alertas e notas clínicas</h3>
+              <ul class="alert-list" id="clinicalAlerts"></ul>
+            </article>
+            <article class="panel">
+              <h3>Sintomas noturnos</h3>
+              <div class="tag-row" id="symptomTags"></div>
+            </article>
+            <article class="panel">
+              <h3>Condições e CPAP</h3>
+              <div class="tag-row" id="conditionTags"></div>
+              <div class="tag-row" id="cpapTags"></div>
+            </article>
+          </div>
+          <div class="actions">
+            <button class="btn secondary" id="editBtn" type="button">Editar respostas</button>
+            <button class="btn" id="printBtn" type="button">Imprimir dashboard</button>
+          </div>
+        </section>
+        </div>
+
+        <div class="mode-panel" id="providerPanel">
+          <form class="provider-form" id="providerForm">
+            <section class="provider-section">
+              <p class="step-kicker">Módulo do fisioterapeuta</p>
+              <h2>Dados do profissional</h2>
+              <p class="intro">Área restrita para registro da avaliação, raciocínio clínico e plano inicial de cuidado.</p>
+              <div class="grid two">
+                <div class="field">
+                  <label for="careType">Tipo de atendimento</label>
+                  <select id="careType" name="careType" required>
+                    <option value="">Selecione</option>
+                    <option>Presencial</option>
+                    <option>Teleatendimento</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="evaluationDate">Data da avaliação</label>
+                  <input id="evaluationDate" name="evaluationDate" type="date" readonly>
+                </div>
+              </div>
+              <div class="grid two">
+                <div class="field">
+                  <label for="physioName">Fisioterapeuta responsável</label>
+                  <input id="physioName" name="physioName" type="text" required>
+                </div>
+                <div class="field">
+                  <label for="crefito">CREFITO</label>
+                  <input id="crefito" name="crefito" type="text" required>
+                </div>
+              </div>
+            </section>
+
+            <section class="provider-section">
+              <p class="step-kicker">Questionários padronizados</p>
+              <h2>Escalas e risco clínico</h2>
+              <fieldset class="grid">
+                <legend>Escala de Sonolência de Epworth</legend>
+                <span class="hint">Qual a probabilidade de você cochilar ou dormir nas seguintes situações do dia a dia?</span>
+                <div class="grid two" id="epworthQuestions">
+                  <div class="field question-block">
+                    <label for="epworthA">Sentado e lendo.</label>
+                    <select id="epworthA" name="epworthItem">
+                      <option value="">Selecione</option>
+                      <option value="0">0 - Nenhuma probabilidade</option>
+                      <option value="1">1 - Pequena probabilidade</option>
+                      <option value="2">2 - Moderada probabilidade</option>
+                      <option value="3">3 - Grande probabilidade</option>
+                    </select>
+                  </div>
+                  <div class="field question-block">
+                    <label for="epworthB">Assistindo à TV.</label>
+                    <select id="epworthB" name="epworthItem">
+                      <option value="">Selecione</option>
+                      <option value="0">0 - Nenhuma probabilidade</option>
+                      <option value="1">1 - Pequena probabilidade</option>
+                      <option value="2">2 - Moderada probabilidade</option>
+                      <option value="3">3 - Grande probabilidade</option>
+                    </select>
+                  </div>
+                  <div class="field question-block">
+                    <label for="epworthC">Sentado, em um lugar público.</label>
+                    <select id="epworthC" name="epworthItem">
+                      <option value="">Selecione</option>
+                      <option value="0">0 - Nenhuma probabilidade</option>
+                      <option value="1">1 - Pequena probabilidade</option>
+                      <option value="2">2 - Moderada probabilidade</option>
+                      <option value="3">3 - Grande probabilidade</option>
+                    </select>
+                  </div>
+                  <div class="field question-block">
+                    <label for="epworthD">Como passageiro por uma hora sem parar.</label>
+                    <select id="epworthD" name="epworthItem">
+                      <option value="">Selecione</option>
+                      <option value="0">0 - Nenhuma probabilidade</option>
+                      <option value="1">1 - Pequena probabilidade</option>
+                      <option value="2">2 - Moderada probabilidade</option>
+                      <option value="3">3 - Grande probabilidade</option>
+                    </select>
+                  </div>
+                  <div class="field question-block">
+                    <label for="epworthE">Deitado para descansar à tarde.</label>
+                    <select id="epworthE" name="epworthItem">
+                      <option value="">Selecione</option>
+                      <option value="0">0 - Nenhuma probabilidade</option>
+                      <option value="1">1 - Pequena probabilidade</option>
+                      <option value="2">2 - Moderada probabilidade</option>
+                      <option value="3">3 - Grande probabilidade</option>
+                    </select>
+                  </div>
+                  <div class="field question-block">
+                    <label for="epworthF">Sentado e conversando com alguém.</label>
+                    <select id="epworthF" name="epworthItem">
+                      <option value="">Selecione</option>
+                      <option value="0">0 - Nenhuma probabilidade</option>
+                      <option value="1">1 - Pequena probabilidade</option>
+                      <option value="2">2 - Moderada probabilidade</option>
+                      <option value="3">3 - Grande probabilidade</option>
+                    </select>
+                  </div>
+                  <div class="field question-block">
+                    <label for="epworthG">Sentado após o almoço, sem álcool.</label>
+                    <select id="epworthG" name="epworthItem">
+                      <option value="">Selecione</option>
+                      <option value="0">0 - Nenhuma probabilidade</option>
+                      <option value="1">1 - Pequena probabilidade</option>
+                      <option value="2">2 - Moderada probabilidade</option>
+                      <option value="3">3 - Grande probabilidade</option>
+                    </select>
+                  </div>
+                  <div class="field question-block">
+                    <label for="epworthH">No carro, parado no trânsito pesado.</label>
+                    <select id="epworthH" name="epworthItem">
+                      <option value="">Selecione</option>
+                      <option value="0">0 - Nenhuma probabilidade</option>
+                      <option value="1">1 - Pequena probabilidade</option>
+                      <option value="2">2 - Moderada probabilidade</option>
+                      <option value="3">3 - Grande probabilidade</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="score-card" id="epworthResult">
+                  <strong>Pontuação final Epworth: 0 / 24</strong>
+                  <span>Classificação: Sonolência Normal</span>
+                </div>
+              </fieldset>
+
+              <div class="field">
+                <label for="stopBang">Questionário STOP-Bang</label>
+                <input id="stopBang" name="stopBang" type="number" min="0" max="8" step="1" placeholder="Pontuação final / 8">
+              </div>
+
+              <fieldset class="grid">
+                <legend>Questionário de Berlim</legend>
+                <span class="hint">O sistema calcula as 3 categorias e usa IMC/hipertensão do módulo do paciente.</span>
+                <div class="grid">
+                  <div class="question-block">
+                    <span>Categoria 1: Ronco e pausas</span>
+                    <div class="field">
+                      <label for="berlinSnore">Você ronca?</label>
+                      <select id="berlinSnore" name="berlinSnore">
+                        <option value="">Selecione</option>
+                        <option>Sim</option>
+                        <option>Não</option>
+                        <option>Não sei</option>
+                      </select>
+                    </div>
+                    <div class="field">
+                      <label for="berlinSnoreVolume">O seu ronco é:</label>
+                      <select id="berlinSnoreVolume" name="berlinScoredCat1">
+                        <option value="">Selecione</option>
+                        <option value="1">Mais alto que o tom da fala</option>
+                        <option value="0">Tão alto quanto o tom da fala</option>
+                        <option value="0">Mais baixo que o tom da fala</option>
+                        <option value="1">Muito alto, escutado em outros cômodos</option>
+                      </select>
+                    </div>
+                    <div class="field">
+                      <label for="berlinSnoreFrequency">Com que frequência você ronca?</label>
+                      <select id="berlinSnoreFrequency" name="berlinScoredCat1">
+                        <option value="">Selecione</option>
+                        <option value="1">Quase todos os dias</option>
+                        <option value="1">3 a 4 vezes por semana</option>
+                        <option value="0">1 a 2 vezes por semana</option>
+                        <option value="0">Raramente ou nunca</option>
+                      </select>
+                    </div>
+                    <div class="field">
+                      <label for="berlinBother">O seu ronco já incomodou outras pessoas?</label>
+                      <select id="berlinBother" name="berlinScoredCat1">
+                        <option value="">Selecione</option>
+                        <option value="1">Sim</option>
+                        <option value="0">Não</option>
+                      </select>
+                    </div>
+                    <div class="field">
+                      <label for="berlinApnea">Alguém já notou que você para de respirar durante o sono?</label>
+                      <select id="berlinApnea" name="berlinScoredCat1">
+                        <option value="">Selecione</option>
+                        <option value="1">Quase todos os dias</option>
+                        <option value="1">3 a 4 vezes por semana</option>
+                        <option value="0">1 a 2 vezes por semana</option>
+                        <option value="0">Raramente ou nunca</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="question-block">
+                    <span>Categoria 2: Cansaço diurno</span>
+                    <div class="field">
+                      <label for="berlinWakeTired">Com que frequência você se sente cansado logo após acordar?</label>
+                      <select id="berlinWakeTired" name="berlinScoredCat2">
+                        <option value="">Selecione</option>
+                        <option value="1">Quase todos os dias</option>
+                        <option value="1">3 a 4 vezes por semana</option>
+                        <option value="0">1 a 2 vezes por semana</option>
+                        <option value="0">Raramente ou nunca</option>
+                      </select>
+                    </div>
+                    <div class="field">
+                      <label for="berlinDayTired">Durante o período acordado, você se sente cansado, fadigado ou exausto?</label>
+                      <select id="berlinDayTired" name="berlinScoredCat2">
+                        <option value="">Selecione</option>
+                        <option value="1">Quase todos os dias</option>
+                        <option value="1">3 a 4 vezes por semana</option>
+                        <option value="0">1 a 2 vezes por semana</option>
+                        <option value="0">Raramente ou nunca</option>
+                      </select>
+                    </div>
+                    <div class="field">
+                      <label for="berlinDrivingSleep">Você já cochilou ou dormiu enquanto dirigia?</label>
+                      <select id="berlinDrivingSleep" name="berlinScoredCat2">
+                        <option value="">Selecione</option>
+                        <option value="1">Sim</option>
+                        <option value="0">Não</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="score-card" id="berlinResult">
+                  <strong>Resultado Berlim: BAIXO RISCO para SAOS</strong>
+                  <span>Categoria 1: negativa | Categoria 2: negativa | Categoria 3: negativa</span>
+                </div>
+              </fieldset>
+            </section>
+
+            <section class="provider-section">
+              <p class="step-kicker">Avaliação fisioterapêutica</p>
+              <h2>Respiratória e funcional</h2>
+              <div class="grid two">
+                <div class="field">
+                  <label for="respiratoryType">Tipo respiratório</label>
+                  <select id="respiratoryType" name="respiratoryType">
+                    <option value="">Selecione</option>
+                    <option>Nasal</option>
+                    <option>Oral</option>
+                    <option>Misto</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="breathingPattern">Padrão respiratório</label>
+                  <select id="breathingPattern" name="breathingPattern">
+                    <option value="">Selecione</option>
+                    <option>Diafragmático</option>
+                    <option>Torácico superior</option>
+                    <option>Paradoxal</option>
+                  </select>
+                </div>
+              </div>
+              <div class="grid two">
+                <div class="field">
+                  <label for="mallampati">Classe de Mallampati/Friedman</label>
+                  <select id="mallampati" name="mallampati">
+                    <option value="">Selecione</option>
+                    <option>I</option>
+                    <option>II</option>
+                    <option>III</option>
+                    <option>IV</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="tonsils">Graduação de amígdalas</label>
+                  <select id="tonsils" name="tonsils">
+                    <option value="">Selecione</option>
+                    <option>0</option>
+                    <option>1+</option>
+                    <option>2+</option>
+                    <option>3+</option>
+                    <option>4+</option>
+                  </select>
+                </div>
+              </div>
+              <fieldset>
+                <legend>Alterações posturais</legend>
+                <div class="choice-list">
+                  <label class="choice"><input type="checkbox" name="postureChanges" value="Normal"> Normal</label>
+                  <label class="choice"><input type="checkbox" name="postureChanges" value="Anteriorização de cabeça"> Anteriorização de cabeça</label>
+                  <label class="choice"><input type="checkbox" name="postureChanges" value="Hipercifose torácica"> Hipercifose torácica</label>
+                </div>
+              </fieldset>
+              <fieldset>
+                <legend>Anatomia do palato</legend>
+                <div class="choice-list">
+                  <label class="choice"><input type="checkbox" name="palateAnatomy" value="Normal"> Normal</label>
+                  <label class="choice"><input type="checkbox" name="palateAnatomy" value="Ogival"> Ogival</label>
+                  <label class="choice"><input type="checkbox" name="palateAnatomy" value="Úvula longa/edemaciada"> Úvula longa/edemaciada</label>
+                </div>
+              </fieldset>
+              <fieldset>
+                <legend>Obstrução nasal e comorbidades de vias aéreas</legend>
+                <div class="choice-list">
+                  <label class="choice"><input type="checkbox" name="airwayComorbidities" value="Ausente"> Ausente</label>
+                  <label class="choice"><input type="checkbox" name="airwayComorbidities" value="Desvio septal à Direita"> Desvio septal à Direita</label>
+                  <label class="choice"><input type="checkbox" name="airwayComorbidities" value="Desvio septal à Esquerda"> Desvio septal à Esquerda</label>
+                  <label class="choice"><input type="checkbox" name="airwayComorbidities" value="Hipertrofia de Cornetos"> Hipertrofia de Cornetos</label>
+                  <label class="choice"><input type="checkbox" name="airwayComorbidities" value="Rinite Crônica"> Rinite Crônica</label>
+                </div>
+              </fieldset>
+              <div class="field">
+                <label for="effortTolerance">Tolerância ao esforço relatada</label>
+                <select id="effortTolerance" name="effortTolerance">
+                  <option value="">Selecione</option>
+                  <option>Boa</option>
+                  <option>Regular</option>
+                  <option>Ruim</option>
+                </select>
+              </div>
+              <fieldset>
+                <legend>Espelho de Glatzel - observação da condensação</legend>
+                <div class="choice-list">
+                  <label class="choice"><input type="checkbox" name="glatzel" value="Bilateral"> Bilateral</label>
+                  <label class="choice"><input type="checkbox" name="glatzel" value="Unilateral"> Unilateral</label>
+                  <label class="choice"><input type="checkbox" name="glatzel" value="Ausente"> Ausente</label>
+                  <label class="choice"><input type="checkbox" name="glatzel" value="Simétrica"> Simétrica</label>
+                  <label class="choice"><input type="checkbox" name="glatzel" value="Assimétrica"> Assimétrica</label>
+                </div>
+              </fieldset>
+              <div class="field">
+                <label for="glatzelNotes">Observações do exame funcional</label>
+                <textarea id="glatzelNotes" name="glatzelNotes" placeholder="Observações em respiração tranquila, profunda e em decúbito dorsal."></textarea>
+              </div>
+            </section>
+
+            <section class="provider-section">
+              <p class="step-kicker">Apoio à decisão</p>
+              <h2>Seleção de máscara e ajuste de pressão</h2>
+              <fieldset>
+                <legend>Fatores adicionais para seleção de máscara</legend>
+                <div class="choice-list">
+                  <label class="choice"><input type="checkbox" name="maskFactors" value="Claustrofobia"> Claustrofobia</label>
+                  <label class="choice"><input type="checkbox" name="maskFactors" value="Usa óculos"> Usa óculos</label>
+                  <label class="choice"><input type="checkbox" name="maskFactors" value="Barba"> Barba</label>
+                  <label class="choice"><input type="checkbox" name="maskFactors" value="Dorme de lado/bruços"> Dorme de lado/bruços</label>
+                  <label class="choice"><input type="checkbox" name="maskFactors" value="Precisa de pressões mais altas"> Precisa de pressões mais altas</label>
+                  <label class="choice"><input type="checkbox" name="maskFactors" value="Não tolera contato direto nas narinas"> Não tolera contato direto nas narinas</label>
+                  <label class="choice"><input type="checkbox" name="maskFactors" value="Obstrução nasal anatômica severa"> Obstrução nasal anatômica severa</label>
+                  <label class="choice"><input type="checkbox" name="maskFactors" value="Falha prévia com máscaras nasais"> Falha prévia com máscaras nasais</label>
+                </div>
+              </fieldset>
+              <div class="suggestion-box" id="maskSuggestion" aria-live="polite">
+                <strong>Recomendação dinâmica</strong>
+                <span>Preencha os dados respiratórios e fatores adicionais para visualizar a sugestão clínica.</span>
+              </div>
+              <div class="grid two">
+                <div class="field">
+                  <label for="finalMask">Seleção final da máscara pelo profissional</label>
+                  <select id="finalMask" name="finalMask">
+                    <option value="">Selecione</option>
+                    <option>Almofadas Nasais</option>
+                    <option>Nasal Tradicional</option>
+                    <option>Oronasal/Facial</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="initialPressure">Pressão de titulação inicial proposta</label>
+                  <input id="initialPressure" name="initialPressure" type="text" placeholder="Ex: APAP mínimo 6 cmH2O">
+                </div>
+              </div>
+            </section>
+
+            <section class="provider-section">
+              <p class="step-kicker">Fechamento</p>
+              <h2>Plano e termo de ciência</h2>
+              <div class="field">
+                <label for="clinicalAnalysis">Análise fisioterapêutica</label>
+                <textarea id="clinicalAnalysis" name="clinicalAnalysis" placeholder="Síntese clínica integrada."></textarea>
+              </div>
+              <fieldset>
+                <legend>Conduta e plano terapêutico inicial</legend>
+                <div class="choice-list">
+                  <label class="choice"><input type="checkbox" name="carePlan" value="Educação e orientação de Higiene do Sono"> Educação e orientação de Higiene do Sono</label>
+                  <label class="choice"><input type="checkbox" name="carePlan" value="Adaptação ao CPAP"> Adaptação ao CPAP</label>
+                  <label class="choice"><input type="checkbox" name="carePlan" value="Titulação orientada"> Titulação orientada</label>
+                  <label class="choice"><input type="checkbox" name="carePlan" value="Acompanhamento estruturado"> Acompanhamento estruturado</label>
+                  <label class="choice"><input type="checkbox" name="carePlan" value="Encaminhamento interdisciplinar"> Encaminhamento interdisciplinar</label>
+                </div>
+              </fieldset>
+              <div class="field">
+                <label for="planDescription">Descrição do plano proposto</label>
+                <textarea id="planDescription" name="planDescription"></textarea>
+              </div>
+              <div class="term-box">
+                <p>O paciente foi devidamente orientado e declara estar ciente quanto aos objetivos do acompanhamento fisioterapêutico do sono, a extrema importância da adesão ao tratamento com PAP, e os limites da atuação profissional da fisioterapia.</p>
+                <label class="choice"><input type="checkbox" id="patientConsent" name="patientConsent" required> Paciente leu, está ciente e concorda com os termos informados na consulta.</label>
+              </div>
+              <div class="field">
+                <label for="digitalSignature">Assinatura digital ou anexo</label>
+                <input id="digitalSignature" name="digitalSignature" type="file" accept="image/*,.pdf">
+              </div>
+            </section>
+
+            <section class="provider-section">
+              <p class="step-kicker">Prescrição PAP</p>
+              <h2>Configuração final do equipamento</h2>
+              <div class="grid two">
+                <div class="field">
+                  <label for="papDeviceModel">Modelo do dispositivo PAP</label>
+                  <select id="papDeviceModel" name="papDeviceModel">
+                    <option value="">Selecione</option>
+                    <option>ResMed AirSense 10</option>
+                    <option>ResMed AirSense 11</option>
+                    <option>ResMed AirMini (Viagem)</option>
+                    <option>Philips DreamStation</option>
+                    <option>Outro</option>
+                  </select>
+                </div>
+                <div class="field conditional" id="papDeviceOtherWrap">
+                  <label for="papDeviceOther">Outro modelo</label>
+                  <input id="papDeviceOther" name="papDeviceOther" type="text">
+                </div>
+              </div>
+              <div class="field">
+                <label for="ventilationMode">Modo de ventilação</label>
+                <select id="ventilationMode" name="ventilationMode">
+                  <option value="">Selecione</option>
+                  <option>CPAP (Pressão Fixa)</option>
+                  <option>APAP (Pressão Automática)</option>
+                  <option>BiPAP / VPAP (Dois níveis de pressão)</option>
+                </select>
+              </div>
+              <div class="conditional" id="cpapApapPressureFields">
+                <div class="grid two">
+                  <div class="field">
+                    <label for="papPressureMin">Pressão fixa ou mínima (cmH2O)</label>
+                    <input id="papPressureMin" name="papPressureMin" type="number" min="0" max="30" step="0.1">
+                  </div>
+                  <div class="field">
+                    <label for="papPressureMax">Pressão máxima (cmH2O)</label>
+                    <input id="papPressureMax" name="papPressureMax" type="number" min="0" max="30" step="0.1">
+                  </div>
+                </div>
+              </div>
+              <div class="conditional" id="bipapPressureFields">
+                <div class="grid two">
+                  <div class="field">
+                    <label for="ipapPressure">IPAP (cmH2O)</label>
+                    <input id="ipapPressure" name="ipapPressure" type="number" min="0" max="35" step="0.1">
+                  </div>
+                  <div class="field">
+                    <label for="epapPressure">EPAP (cmH2O)</label>
+                    <input id="epapPressure" name="epapPressure" type="number" min="0" max="35" step="0.1">
+                  </div>
+                </div>
+              </div>
+              <div class="grid two">
+                <div class="field">
+                  <label for="rampMode">Configuração de rampa</label>
+                  <select id="rampMode" name="rampMode">
+                    <option value="">Selecione</option>
+                    <option>Desativada</option>
+                    <option>Automática (Auto)</option>
+                    <option>Tempo Fixo</option>
+                  </select>
+                </div>
+                <div class="field conditional" id="rampTimeWrap">
+                  <label for="rampTime">Tempo fixo de rampa (minutos)</label>
+                  <input id="rampTime" name="rampTime" type="number" min="0" max="60" step="1">
+                </div>
+                <div class="field">
+                  <label for="rampStartPressure">Pressão inicial da rampa (cmH2O)</label>
+                  <input id="rampStartPressure" name="rampStartPressure" type="number" min="0" max="30" step="0.1">
+                </div>
+                <div class="field">
+                  <label for="eprFlex">Alívio de pressão expiratória (EPR/FLEX)</label>
+                  <select id="eprFlex" name="eprFlex">
+                    <option value="">Selecione</option>
+                    <option>Desativado</option>
+                    <option>Nível 1</option>
+                    <option>Nível 2</option>
+                    <option>Nível 3</option>
+                  </select>
+                </div>
+              </div>
+              <div class="grid two">
+                <div class="field">
+                  <label for="humidifierMode">Umidificador aquecido</label>
+                  <select id="humidifierMode" name="humidifierMode">
+                    <option value="">Selecione</option>
+                    <option>Não utiliza</option>
+                    <option>Nível Fixo</option>
+                    <option>Automático (Climateline)</option>
+                  </select>
+                </div>
+                <div class="field conditional" id="humidifierLevelWrap">
+                  <label for="humidifierLevel">Nível fixo de umidificação</label>
+                  <input id="humidifierLevel" name="humidifierLevel" type="number" min="0" max="8" step="1">
+                </div>
+              </div>
+              <div class="grid two">
+                <div class="field">
+                  <label for="prescribedMaskModel">Modelo da máscara escolhida</label>
+                  <select id="prescribedMaskModel" name="prescribedMaskModel">
+                    <option value="">Selecione</option>
+                    <option>ResMed AirFit P10 (Almofadas Nasais)</option>
+                    <option>ResMed AirFit N20 (Nasal Tradicional)</option>
+                    <option>ResMed AirFit F20 (Oronasal/Facial)</option>
+                    <option>ResMed AirFit F30 / F30i (Oronasal Ultra-compacta)</option>
+                    <option>ResMed AirFit N30i / P30i (Tubo no topo da cabeça)</option>
+                    <option>Outro Modelo</option>
+                  </select>
+                </div>
+                <div class="field conditional" id="maskOtherWrap">
+                  <label for="prescribedMaskOther">Outro modelo de máscara</label>
+                  <input id="prescribedMaskOther" name="prescribedMaskOther" type="text">
+                </div>
+                <div class="field">
+                  <label for="maskSize">Tamanho da máscara</label>
+                  <select id="maskSize" name="maskSize">
+                    <option value="">Selecione</option>
+                    <option>P / S (Pequeno)</option>
+                    <option>M (Médio)</option>
+                    <option>G / L (Grande)</option>
+                    <option>Wide (Largo)</option>
+                    <option>Tamanho Misto / Inclui múltiplos tamanhos (Fit Pack)</option>
+                  </select>
+                </div>
+              </div>
+              <div class="suggestion-box" id="pressureSuggestion" aria-live="polite">
+                <strong>Sugestão matemática de pressão</strong>
+                <span>Informe IMC, circunferência cervical e IAH quando disponível para calcular a faixa orientativa.</span>
+              </div>
+              <div class="actions">
+                <button class="btn secondary" id="clearProviderBtn" type="button">Limpar módulo</button>
+                <button class="btn secondary" id="generatePdfBtn" type="button">Gerar PDF consolidado</button>
+                <button class="btn" type="submit">Salvar registro interno</button>
+                <button class="btn" id="printReportBtn" type="button">Imprimir / salvar PDF</button>
+              </div>
+            </section>
+          </form>
+        </div>
+        <section class="review" id="pdfReport"></section>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const form = document.querySelector("#sleepForm");
+    const steps = [...document.querySelectorAll(".step")];
+    const prevBtn = document.querySelector("#prevBtn");
+    const nextBtn = document.querySelector("#nextBtn");
+    const progressBar = document.querySelector("#progressBar");
+    const stepLabel = document.querySelector("#stepLabel");
+    const sectionName = document.querySelector("#sectionName");
+    const review = document.querySelector("#review");
+    const topbar = document.querySelector("#formTop");
+    const bmiResult = document.querySelector("#bmiResult");
+    const patientModeBtn = document.querySelector("#patientModeBtn");
+    const providerModeBtn = document.querySelector("#providerModeBtn");
+    const patientPanel = document.querySelector("#patientPanel");
+    const providerPanel = document.querySelector("#providerPanel");
+    const providerForm = document.querySelector("#providerForm");
+    const epworthResult = document.querySelector("#epworthResult");
+    const berlinResult = document.querySelector("#berlinResult");
+    const maskSuggestion = document.querySelector("#maskSuggestion");
+    const pressureSuggestion = document.querySelector("#pressureSuggestion");
+    const pdfReport = document.querySelector("#pdfReport");
+    let currentStep = 0;
+
+    const getCheckedValue = (name) => {
+      const checked = form.querySelector(`[name="${name}"]:checked`);
+      return checked ? checked.value : "";
+    };
+
+    const getCheckedValues = (name) => {
+      return [...form.querySelectorAll(`[name="${name}"]:checked`)].map((item) => item.value);
+    };
+
+    const getProviderCheckedValues = (name) => {
+      return [...providerForm.querySelectorAll(`[name="${name}"]:checked`)].map((item) => item.value);
+    };
+
+    const getProviderValue = (name) => {
+      const field = providerForm.elements[name];
+      return field ? field.value : "";
+    };
+
+    const sumProviderSelectValues = (name) => {
+      return [...providerForm.querySelectorAll(`select[name="${name}"]`)]
+        .reduce((total, field) => total + Number(field.value || 0), 0);
+    };
+
+    const updateEpworthScore = () => {
+      const total = sumProviderSelectValues("epworthItem");
+      const answered = [...providerForm.querySelectorAll('select[name="epworthItem"]')].filter((field) => field.value !== "").length;
+      const excessive = total > 10;
+      epworthResult.classList.toggle("critical", excessive);
+      epworthResult.innerHTML = `
+        <strong>Pontuação final Epworth: ${answered ? total : "Não avaliado"}${answered ? " / 24" : ""}</strong>
+        <span>Classificação: ${answered ? (excessive ? "⚠️ Sonolência Diurna Excessiva" : "Sonolência Normal") : "Não avaliado"}</span>
+      `;
+      return { total, answered, classification: answered ? (excessive ? "Sonolência Diurna Excessiva" : "Sonolência Normal") : "Não avaliado" };
+    };
+
+    const updateBerlinScore = () => {
+      const category1Score = sumProviderSelectValues("berlinScoredCat1");
+      const category2Score = sumProviderSelectValues("berlinScoredCat2");
+      const answered = [...providerForm.querySelectorAll('select[name="berlinScoredCat1"], select[name="berlinScoredCat2"], #berlinSnore')]
+        .filter((field) => field.value !== "").length;
+      const bmi = Number(calculateBmi());
+      const hasHypertension = getCheckedValues("conditions").includes("Hipertensão Arterial");
+      const category1Positive = category1Score >= 2;
+      const category2Positive = category2Score >= 2;
+      const category3Positive = bmi > 30 || hasHypertension;
+      const positiveCount = [category1Positive, category2Positive, category3Positive].filter(Boolean).length;
+      const highRisk = positiveCount >= 2;
+      const status = (positive) => positive ? "positiva" : "negativa";
+
+      berlinResult.classList.toggle("critical", highRisk);
+      berlinResult.innerHTML = `
+        <strong>Resultado Berlim: ${answered ? (highRisk ? "⚠️ ALTO RISCO" : "BAIXO RISCO") : "Não avaliado"}${answered ? " para Síndrome da Apneia Obstrutiva do Sono (SAOS)" : ""}</strong>
+        <span>Categoria 1: ${status(category1Positive)} (${category1Score} ponto${category1Score === 1 ? "" : "s"}) | Categoria 2: ${status(category2Positive)} (${category2Score} ponto${category2Score === 1 ? "" : "s"}) | Categoria 3: ${status(category3Positive)} (IMC ${bmi ? bmi.toFixed(1) : "-"}${hasHypertension ? " + hipertensão" : ""})</span>
+      `;
+      return { category1Score, category2Score, category1Positive, category2Positive, category3Positive, positiveCount, highRisk, answered };
+    };
+
+    const setMode = (mode) => {
+      const isPatient = mode === "patient";
+      patientPanel.classList.toggle("active", isPatient);
+      providerPanel.classList.toggle("active", !isPatient);
+      patientModeBtn.classList.toggle("active", isPatient);
+      providerModeBtn.classList.toggle("active", !isPatient);
+      patientModeBtn.setAttribute("aria-selected", String(isPatient));
+      providerModeBtn.setAttribute("aria-selected", String(!isPatient));
+      topbar.style.display = isPatient && !review.classList.contains("active") ? "block" : "none";
+    };
+
+    const setConditional = (element, visible) => {
+      element.classList.toggle("visible", visible);
+      element.querySelectorAll("input, select, textarea").forEach((field) => {
+        if (!visible) {
+          if (field.type === "checkbox" || field.type === "radio") field.checked = false;
+          else field.value = "";
+        }
+      });
+    };
+
+    const calculateBmi = () => {
+      const weight = Number(form.weight.value);
+      const height = Number(form.height.value);
+      if (!weight || !height) {
+        bmiResult.textContent = "Informe peso e altura";
+        return "";
+      }
+      const bmi = weight / (height * height);
+      const rounded = bmi.toFixed(1);
+      const category = bmi < 18.5 ? "baixo peso" : bmi < 25 ? "eutrofia" : bmi < 30 ? "sobrepeso" : "obesidade";
+      bmiResult.textContent = `${rounded} (${category})`;
+      return rounded;
+    };
+
+    const updateConditionals = () => {
+      setConditional(document.querySelector("#examFields"), getCheckedValue("sleepExam") === "Sim");
+      setConditional(document.querySelector("#titrationFields"), getCheckedValue("examTitration") === "Sim");
+      setConditional(document.querySelector("#cpapFields"), getCheckedValue("usesCpap") === "Sim");
+      calculateBmi();
+    };
+
+    const calculatePressurePrediction = () => {
+      const bmi = Number(calculateBmi());
+      const neck = Number(form.neck.value);
+      const ahi = Number(form.ahi.value) || 15;
+      if (!bmi || !neck) return null;
+      const airwayRisk = getCheckedValues("conditions").some((condition) => condition.includes("Rinite") || condition.includes("Desvio"));
+      const ideal = (0.16 * bmi) + (0.13 * neck) + (0.04 * ahi) - 5.12;
+      const minFloor = airwayRisk ? 6 : 4;
+      const min = Math.max(minFloor, ideal - 2);
+      const max = Math.min(15, ideal + 4);
+      return { ideal, min, max, ahiUsed: ahi, airwayRisk };
+    };
+
+    const updatePressureSuggestion = () => {
+      const prediction = calculatePressurePrediction();
+      if (!prediction) {
+        pressureSuggestion.innerHTML = "<strong>Sugestão matemática de pressão</strong><span>Informe IMC e circunferência cervical para calcular a faixa orientativa. Se o IAH não estiver disponível, o sistema usa 15 no cálculo.</span>";
+        return;
+      }
+      pressureSuggestion.innerHTML = `
+        <strong>Sugestão matemática de pressão</strong>
+        <span>APAP mínima: ${prediction.min.toFixed(1)} cmH2O | Ideal calculada: ${prediction.ideal.toFixed(1)} cmH2O | APAP máxima: ${prediction.max.toFixed(1)} cmH2O${prediction.airwayRisk ? " | mínimo ajustado por rinite/desvio" : ""}</span>
+      `;
+    };
+
+    const updateProviderConditionals = () => {
+      setConditional(document.querySelector("#papDeviceOtherWrap"), getProviderValue("papDeviceModel") === "Outro");
+      const ventilationMode = getProviderValue("ventilationMode");
+      setConditional(document.querySelector("#cpapApapPressureFields"), ventilationMode.includes("CPAP") || ventilationMode.includes("APAP"));
+      setConditional(document.querySelector("#bipapPressureFields"), ventilationMode.includes("BiPAP"));
+      setConditional(document.querySelector("#rampTimeWrap"), getProviderValue("rampMode") === "Tempo Fixo");
+      setConditional(document.querySelector("#humidifierLevelWrap"), getProviderValue("humidifierMode") === "Nível Fixo");
+      setConditional(document.querySelector("#maskOtherWrap"), getProviderValue("prescribedMaskModel") === "Outro Modelo");
+    };
+
+    const updateProviderLogic = () => {
+      updateEpworthScore();
+      updateBerlinScore();
+      updateProviderConditionals();
+      updatePressureSuggestion();
+
+      const respiratoryType = providerForm.respiratoryType.value;
+      const airway = getProviderCheckedValues("airwayComorbidities");
+      const factors = getProviderCheckedValues("maskFactors");
+      const isNasalBreather = respiratoryType === "Nasal";
+      const isStrictOralOrMixed = respiratoryType === "Oral" || respiratoryType === "Misto";
+      const hasPillowPriority = factors.includes("Claustrofobia") ||
+        factors.includes("Usa óculos") ||
+        factors.includes("Barba") ||
+        factors.includes("Dorme de lado/bruços");
+      const needsTraditionalNasal = factors.includes("Precisa de pressões mais altas") ||
+        factors.includes("Não tolera contato direto nas narinas");
+      const hasSevereNasalBlock = factors.includes("Obstrução nasal anatômica severa");
+      const hasPreviousNasalFailure = factors.includes("Falha prévia com máscaras nasais");
+
+      let title = "Recomendação dinâmica";
+      let text = "Preencha os dados respiratórios e fatores adicionais para visualizar a sugestão clínica.";
+
+      if (isNasalBreather && hasPillowPriority && !needsTraditionalNasal && !hasSevereNasalBlock && !hasPreviousNasalFailure) {
+        title = "1ª opção: MÁSCARA DE ALMOFADAS NASAIS (PILLOWS)";
+        text = "Priorizar quando o paciente é respirador nasal e apresenta claustrofobia, usa óculos, tem barba ou dorme de lado/bruços. NOTA: iniciar com pressões menores ou rampa mais suave para melhor tolerância, monitorando conforto nasal.";
+      } else if (isNasalBreather && (needsTraditionalNasal || !hasPillowPriority) && !hasSevereNasalBlock && !hasPreviousNasalFailure) {
+        title = "2ª opção: MÁSCARA NASAL TRADICIONAL";
+        text = "Indicar quando o paciente é respirador nasal, mas precisa de pressões mais altas, não tolera contato direto dentro das narinas ou não apresenta fatores fortes para almofadas nasais. Considerar queixeira se houver escape bucal.";
+      } else if (isStrictOralOrMixed || hasSevereNasalBlock || hasPreviousNasalFailure) {
+        title = "3ª opção: MÁSCARA ORONASAL (FACIAL)";
+        text = "Usar apenas quando houver respiração oral/mista estrita, obstrução nasal anatômica severa que impeça o fluxo nasal ou falha prévia com máscaras nasais. NOTA: pelo maior espaço morto e tração posterior da mandíbula, pode ser necessário ajuste fino da pressão de titulação e monitoramento rigoroso de vazamentos.";
+      }
+
+      maskSuggestion.innerHTML = `<strong>${title}</strong><span>${text}</span>`;
+    };
+
+    const updateStep = () => {
+      steps.forEach((step, index) => step.classList.toggle("active", index === currentStep));
+      const percent = ((currentStep + 1) / steps.length) * 100;
+      progressBar.style.width = `${percent}%`;
+      stepLabel.textContent = `Etapa ${currentStep + 1} de ${steps.length}`;
+      sectionName.textContent = steps[currentStep].dataset.stepTitle;
+      prevBtn.disabled = currentStep === 0;
+      nextBtn.textContent = currentStep === steps.length - 1 ? "Enviar avaliação" : "Continuar";
+    };
+
+    const validateStep = () => {
+      const fields = [...steps[currentStep].querySelectorAll("input, select, textarea")]
+        .filter((field) => !field.closest(".conditional:not(.visible)"));
+      for (const field of fields) {
+        if (!field.checkValidity()) {
+          field.reportValidity();
+          return false;
+        }
+      }
+      return true;
+    };
+
+    const collectData = () => {
+      return {
+        fullName: form.fullName.value.trim(),
+        gender: form.gender.value,
+        birthDate: form.birthDate.value,
+        phone: form.phone.value.trim(),
+        mainComplaint: form.mainComplaint.value.trim(),
+        sleepTime: form.sleepTime.value,
+        wakeTime: form.wakeTime.value,
+        scheduleVariation: form.scheduleVariation.value,
+        screenUse: form.screenUse.value,
+        naps: form.naps.value,
+        nightSymptoms: getCheckedValues("nightSymptoms"),
+        weight: form.weight.value,
+        height: form.height.value,
+        neck: form.neck.value,
+        bmi: calculateBmi(),
+        sleepExam: getCheckedValue("sleepExam"),
+        examType: form.examType.value,
+        examDate: form.examDate.value,
+        examTitration: getCheckedValue("examTitration"),
+        titrationPressure: form.titrationPressure.value,
+        ahi: form.ahi.value,
+        odi: form.odi.value,
+        basalO2: form.basalO2.value,
+        nadirO2: form.nadirO2.value,
+        t90: form.t90.value,
+        sleepEfficiency: form.sleepEfficiency.value,
+        medicalDiagnosis: form.medicalDiagnosis.value,
+        examFile: form.examFile.files[0]?.name || "",
+        examNotes: form.examNotes.value.trim(),
+        conditions: getCheckedValues("conditions"),
+        usesCpap: getCheckedValue("usesCpap"),
+        cpapTime: form.cpapTime.value.trim(),
+        deviceType: form.deviceType.value,
+        maskType: form.maskType.value,
+        cpapDifficulties: getCheckedValues("cpapDifficulties")
+      };
+    };
+
+    const collectProviderData = () => {
+      return {
+        careType: getProviderValue("careType"),
+        evaluationDate: getProviderValue("evaluationDate"),
+        physioName: getProviderValue("physioName"),
+        crefito: getProviderValue("crefito"),
+        stopBang: getProviderValue("stopBang"),
+        respiratoryType: getProviderValue("respiratoryType"),
+        finalMask: getProviderValue("finalMask"),
+        initialPressure: getProviderValue("initialPressure"),
+        clinicalAnalysis: getProviderValue("clinicalAnalysis"),
+        planDescription: getProviderValue("planDescription"),
+        carePlan: getProviderCheckedValues("carePlan"),
+        patientConsent: providerForm.patientConsent.checked,
+        papDeviceModel: getProviderValue("papDeviceModel") === "Outro" ? getProviderValue("papDeviceOther") : getProviderValue("papDeviceModel"),
+        ventilationMode: getProviderValue("ventilationMode"),
+        papPressureMin: getProviderValue("papPressureMin"),
+        papPressureMax: getProviderValue("papPressureMax"),
+        ipapPressure: getProviderValue("ipapPressure"),
+        epapPressure: getProviderValue("epapPressure"),
+        rampMode: getProviderValue("rampMode"),
+        rampTime: getProviderValue("rampTime"),
+        rampStartPressure: getProviderValue("rampStartPressure"),
+        eprFlex: getProviderValue("eprFlex"),
+        humidifierMode: getProviderValue("humidifierMode"),
+        humidifierLevel: getProviderValue("humidifierLevel"),
+        prescribedMaskModel: getProviderValue("prescribedMaskModel") === "Outro Modelo" ? getProviderValue("prescribedMaskOther") : getProviderValue("prescribedMaskModel"),
+        maskSize: getProviderValue("maskSize")
+      };
+    };
+
+    const recommendMask = (data) => {
+      const dryMouth = data.nightSymptoms.includes("Acordar com a boca muito seca") || data.cpapDifficulties.includes("Boca seca persistente");
+      const rhinitis = data.conditions.some((condition) => condition.includes("Rinite"));
+      const nasalPain = data.cpapDifficulties.includes("Feridas ou dor na ponte nasal");
+      const claustrophobia = data.cpapDifficulties.includes("Claustrofobia / Angústia com a máscara");
+      if (dryMouth || rhinitis) return "Oronasal (Facial)";
+      if (nasalPain || claustrophobia) return "Almofadas Nasais (Pillows)";
+      if (data.maskType) return data.maskType;
+      return "Nasal Tradicional";
+    };
+
+    const buildAlerts = (data) => {
+      const alerts = [];
+      const dryMouth = data.nightSymptoms.includes("Acordar com a boca muito seca") || data.cpapDifficulties.includes("Boca seca persistente");
+      const rhinitis = data.conditions.includes("Asma / Bronquite / Rinite Crônica") || data.conditions.includes("Rinite/Desvio de Septo");
+      const maskRecommendation = recommendMask(data);
+      const severePressureContext = Number(data.ahi) >= 30;
+
+      if (dryMouth || rhinitis) {
+        alerts.push({
+          type: "critical",
+          title: "Alerta de via aérea / respiração oral",
+          text: "Alta probabilidade de respiração oral ou mista/escape bucal. Considerar máscara Oronasal ou necessidade de Queixeira associada à máscara Nasal."
+        });
+      }
+
+      if (maskRecommendation.includes("Oronasal")) {
+        alerts.push({
+          title: "Nota clínica para máscara oronasal",
+          text: "Particularidade de pressão: máscaras oronasais podem deslocar a mandíbula posteriormente e possuem maior espaço morto. Segundo a literatura, pode ser necessário um incremento sutil na pressão de titulação (+1 a +2 cmH2O) para atingir a eficácia ideal em comparação às nasais, além de monitorar vazamentos."
+        });
+      }
+
+      if (maskRecommendation.includes("Almofadas")) {
+        alerts.push({
+          title: "Nota clínica para almofadas nasais",
+          text: `Particularidade de pressão: o fluxo é direcionado e concentrado nas narinas. Evitar pressões de início muito elevadas na rampa para melhorar a tolerância inicial do paciente.${severePressureContext ? " Como há contexto de apneia grave ou IAH elevado, monitorar ressecamento e conforto da mucosa se pressões sustentadas forem superiores a 12 cmH2O." : ""}`
+        });
+      }
+
+      if (data.conditions.includes("Rinite/Desvio de Septo") && data.maskType === "Nasal Tradicional") {
+        alerts.push({
+          title: "Nota clínica para resistência nasal",
+          text: "Particularidade de pressão: para vencer a resistência nasal anatômica logo no início do sono e evitar a queixa de sufocamento, considere configurar uma pressão mínima de início ligeiramente maior no APAP (ex: 6 ou 7 cmH2O em vez do padrão de 4 cmH2O)."
+        });
+      }
+
+      if (!alerts.length) {
+        alerts.push({
+          title: "Sem alertas automáticos críticos",
+          text: "As respostas não acionaram as regras clínicas programadas. Revisar queixa principal, sintomas e contexto do exame para definição final."
+        });
+      }
+
+      return { alerts, maskRecommendation };
+    };
+
+    const addTags = (target, values) => {
+      target.innerHTML = "";
+      if (!values.length) {
+        target.innerHTML = '<p class="empty">Nenhum item marcado.</p>';
+        return;
+      }
+      values.forEach((value) => {
+        const tag = document.createElement("span");
+        tag.className = "tag";
+        tag.textContent = value;
+        target.appendChild(tag);
+      });
+    };
+
+    const getAge = (birthDate) => {
+      if (!birthDate) return "";
+      const birth = new Date(`${birthDate}T00:00:00`);
+      const today = new Date();
+      let age = today.getFullYear() - birth.getFullYear();
+      const hadBirthday = today.getMonth() > birth.getMonth() ||
+        (today.getMonth() === birth.getMonth() && today.getDate() >= birth.getDate());
+      if (!hadBirthday) age -= 1;
+      return age;
+    };
+
+    const textOrNotAssessed = (value) => value || "Não avaliado";
+    const yesNo = (value) => value ? "Sim" : "Não";
+
+    const row = (label, value, hideIfEmpty = false) => {
+      if (hideIfEmpty && !value) return "";
+      return `<div class="pdf-row"><span>${label}</span><strong>${textOrNotAssessed(value)}</strong></div>`;
+    };
+
+    const getNeckAlert = (data) => {
+      const neck = Number(data.neck);
+      if (!neck) return "";
+      const maleRisk = data.gender === "Masculino" && neck > 43;
+      const femaleRisk = data.gender === "Feminino" && neck > 38;
+      return maleRisk || femaleRisk
+        ? "⚠️ Circunferência cervical aumentada: Alto risco de colabamento de vias aéreas por acúmulo de gordura perifaríngea."
+        : "";
+    };
+
+    const renderPdfReport = () => {
+      const patient = collectData();
+      const provider = collectProviderData();
+      const epworth = updateEpworthScore();
+      const berlin = updateBerlinScore();
+      const pressure = calculatePressurePrediction();
+      const neckAlert = getNeckAlert(patient);
+      const stopBang = provider.stopBang ? `${provider.stopBang} / 8` : "Não avaliado";
+      const berlinText = berlin.answered ? (berlin.highRisk ? "ALTO RISCO para SAOS" : "BAIXO RISCO para SAOS") : "Não avaliado";
+      const epworthText = epworth.answered ? `${epworth.total} / 24 - ${epworth.classification}` : "Não avaliado";
+      const pressureText = pressure
+        ? `APAP mínima ${pressure.min.toFixed(1)} cmH2O | Ideal ${pressure.ideal.toFixed(1)} cmH2O | APAP máxima ${pressure.max.toFixed(1)} cmH2O`
+        : "Não avaliado";
+      const papPressureText = provider.ventilationMode.includes("BiPAP")
+        ? `IPAP ${provider.ipapPressure || "Não avaliado"} cmH2O | EPAP ${provider.epapPressure || "Não avaliado"} cmH2O`
+        : `Pressão fixa/mínima ${provider.papPressureMin || "Não avaliado"} cmH2O | Máxima ${provider.papPressureMax || "Não avaliado"} cmH2O`;
+      const rampText = provider.rampMode
+        ? `${provider.rampMode}${provider.rampTime ? ` - ${provider.rampTime} min` : ""}${provider.rampStartPressure ? ` | inicial ${provider.rampStartPressure} cmH2O` : ""}`
+        : "Não avaliado";
+      const humidifierText = provider.humidifierMode
+        ? `${provider.humidifierMode}${provider.humidifierLevel ? ` nível ${provider.humidifierLevel}` : ""}`
+        : "Não avaliado";
+
+      pdfReport.innerHTML = `
+        <div class="pdf-sheet">
+          <header class="pdf-header">
+            <img src="assets/logo-macrosom.png" alt="Macrosom">
+            <div>
+              <strong>Serviço de Fisioterapia do Sono</strong><br>
+              ${textOrNotAssessed(provider.physioName)} | CREFITO ${textOrNotAssessed(provider.crefito)}<br>
+              Data: ${textOrNotAssessed(provider.evaluationDate)} | Atendimento: ${textOrNotAssessed(provider.careType)}
+            </div>
+          </header>
+
+          <section class="pdf-block">
+            <h3>Bloco 1: Identificação e queixa</h3>
+            <div class="pdf-rows">
+              ${row("Nome", patient.fullName)}
+              ${row("Idade", getAge(patient.birthDate) ? `${getAge(patient.birthDate)} anos` : "")}
+              ${row("Sexo", patient.gender)}
+              ${row("IMC", patient.bmi ? `${patient.bmi} kg/m²` : "")}
+              ${row("Pescoço", patient.neck ? `${patient.neck} cm` : "")}
+              ${row("Queixa principal", patient.mainComplaint)}
+            </div>
+          </section>
+
+          <section class="pdf-block">
+            <h3>Bloco 2: Histórico de polissonografia</h3>
+            <div class="pdf-rows">
+              ${row("Realizou exame", patient.sleepExam)}
+              ${row("Tipo", patient.examType, true)}
+              ${row("IAH", patient.ahi, true)}
+              ${row("Nadir de O2", patient.nadirO2 ? `${patient.nadirO2}%` : "", true)}
+              ${row("IDO", patient.odi, true)}
+              ${row("T90", patient.t90 ? `${patient.t90} min` : "", true)}
+              ${row("Titulação PAP", patient.examTitration, true)}
+              ${row("Pressão de titulação", patient.titrationPressure ? `${patient.titrationPressure} cmH2O` : "", true)}
+              ${row("Diagnóstico", patient.medicalDiagnosis, true)}
+              ${row("Comentários", patient.examNotes, true)}
+            </div>
+          </section>
+
+          <section class="pdf-block">
+            <h3>Bloco 3: Triagem e mapa de risco</h3>
+            <div class="pdf-rows">
+              ${row("Epworth", epworthText)}
+              ${row("Berlim", berlinText)}
+              ${row("STOP-Bang", stopBang)}
+              ${row("Alerta cervical", neckAlert, true)}
+            </div>
+          </section>
+
+          <section class="pdf-block">
+            <h3>Bloco 4: Sugestão matemática (uso interno)</h3>
+            <div class="pdf-rows">
+              ${row("Pressão calculada", pressureText)}
+              ${row("Observação", pressure?.airwayRisk ? "APAP mínima ajustada por rinite/desvio de septo." : "", true)}
+            </div>
+          </section>
+
+          <section class="pdf-block pdf-highlight">
+            <h3>Bloco 5: Prescrição final do equipamento</h3>
+            <div class="pdf-rows">
+              ${row("Modelo PAP", provider.papDeviceModel)}
+              ${row("Modo", provider.ventilationMode)}
+              ${row("Pressões", papPressureText)}
+              ${row("Rampa", rampText)}
+              ${row("EPR/FLEX", provider.eprFlex)}
+              ${row("Umidificação", humidifierText)}
+              ${row("Máscara", provider.prescribedMaskModel)}
+              ${row("Tamanho", provider.maskSize)}
+            </div>
+          </section>
+
+          <section class="pdf-block">
+            <h3>Bloco 6: Síntese clínica e conduta</h3>
+            <div class="pdf-rows">
+              ${row("Análise", provider.clinicalAnalysis)}
+              ${row("Condutas", provider.carePlan.length ? provider.carePlan.join(", ") : "")}
+              ${row("Plano proposto", provider.planDescription)}
+              ${row("Termo de ciência", yesNo(provider.patientConsent))}
+            </div>
+          </section>
+        </div>
+      `;
+      pdfReport.classList.add("active");
+      pdfReport.scrollIntoView({ behavior: "smooth", block: "start" });
+    };
+
+    const renderDashboard = () => {
+      const data = collectData();
+      const { alerts, maskRecommendation } = buildAlerts(data);
+      const summary = document.querySelector("#patientSummary");
+      const alertList = document.querySelector("#clinicalAlerts");
+
+      summary.innerHTML = "";
+      [
+        ["Paciente", data.fullName],
+        ["Gênero", data.gender],
+        ["Nascimento", data.birthDate || "-"],
+        ["WhatsApp", data.phone],
+        ["Sono habitual", `${data.sleepTime || "-"} às ${data.wakeTime || "-"}`],
+        ["Variação de horários", data.scheduleVariation],
+        ["Uso de telas", data.screenUse],
+        ["Sonecas", data.naps],
+        ["IMC", data.bmi ? `${data.bmi} kg/m²` : "-"],
+        ["Pescoço", data.neck ? `${data.neck} cm` : "-"],
+        ["Polissonografia", data.sleepExam],
+        ["Tipo do exame", data.examType || "-"],
+        ["IAH / Nadir O2", `${data.ahi || "-"} / ${data.nadirO2 || "-"}%`],
+        ["Diagnóstico do laudo", data.medicalDiagnosis || "-"],
+        ["Uso de CPAP/PAP", data.usesCpap],
+        ["Máscara recomendada", maskRecommendation]
+      ].forEach(([label, value]) => {
+        const li = document.createElement("li");
+        li.innerHTML = `<span>${label}</span><strong>${value || "-"}</strong>`;
+        summary.appendChild(li);
+      });
+
+      alertList.innerHTML = "";
+      alerts.forEach((alert) => {
+        const li = document.createElement("li");
+        li.className = `alert ${alert.type || ""}`;
+        li.innerHTML = `<strong>${alert.title}</strong><span>${alert.text}</span>`;
+        alertList.appendChild(li);
+      });
+
+      addTags(document.querySelector("#symptomTags"), data.nightSymptoms);
+      addTags(document.querySelector("#conditionTags"), data.conditions);
+      addTags(document.querySelector("#cpapTags"), [
+        data.deviceType,
+        data.maskType,
+        data.cpapTime ? `Tempo de uso: ${data.cpapTime}` : "",
+        ...data.cpapDifficulties
+      ].filter(Boolean));
+
+      form.style.display = "none";
+      topbar.style.display = "none";
+      review.classList.add("active");
+      review.scrollIntoView({ behavior: "smooth", block: "start" });
+    };
+
+    prevBtn.addEventListener("click", () => {
+      currentStep = Math.max(0, currentStep - 1);
+      updateStep();
+    });
+
+    nextBtn.addEventListener("click", () => {
+      updateConditionals();
+      if (!validateStep()) return;
+      if (currentStep === steps.length - 1) {
+        renderDashboard();
+        return;
+      }
+      currentStep += 1;
+      updateStep();
+    });
+
+    document.querySelector("#editBtn").addEventListener("click", () => {
+      review.classList.remove("active");
+      form.style.display = "block";
+      topbar.style.display = "block";
+      updateStep();
+    });
+
+    document.querySelector("#printBtn").addEventListener("click", () => window.print());
+
+    patientModeBtn.addEventListener("click", () => setMode("patient"));
+    providerModeBtn.addEventListener("click", () => setMode("provider"));
+
+    providerForm.addEventListener("input", updateProviderLogic);
+    providerForm.addEventListener("change", updateProviderLogic);
+    providerForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      if (!providerForm.checkValidity()) {
+        providerForm.reportValidity();
+        return;
+      }
+      maskSuggestion.innerHTML += "<span><strong>Registro interno validado.</strong> Os dados do módulo do fisioterapeuta estão prontos para impressão ou integração futura com prontuário.</span>";
+      maskSuggestion.scrollIntoView({ behavior: "smooth", block: "center" });
+    });
+
+    document.querySelector("#clearProviderBtn").addEventListener("click", () => {
+      providerForm.reset();
+      providerForm.evaluationDate.value = new Date().toISOString().slice(0, 10);
+      pdfReport.classList.remove("active");
+      pdfReport.innerHTML = "";
+      updateProviderLogic();
+    });
+
+    document.querySelector("#generatePdfBtn").addEventListener("click", renderPdfReport);
+    document.querySelector("#printReportBtn").addEventListener("click", () => {
+      renderPdfReport();
+      window.print();
+    });
+
+    form.addEventListener("input", () => {
+      updateConditionals();
+      updateProviderLogic();
+    });
+    form.addEventListener("change", () => {
+      updateConditionals();
+      updateProviderLogic();
+    });
+    providerForm.evaluationDate.value = new Date().toISOString().slice(0, 10);
+    updateStep();
+    updateConditionals();
+    updateProviderLogic();
+  </script>
+</body>
+</html>
